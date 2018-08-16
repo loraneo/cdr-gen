@@ -98,7 +98,7 @@ public final class CDRGen {
     producer.close();
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InterruptedException {
 
     String configFile = DEFAULT_CONFIG_FILE;
     CDRGen generator = new CDRGen(configFile);
@@ -108,6 +108,7 @@ public final class CDRGen {
 
     List<Person> customers = population.getPopulation();
     generator.saveToFile(customers);
+    Thread.sleep(10000);
     LOG.info("Done.");
   }
 }
