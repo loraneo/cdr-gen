@@ -1,12 +1,12 @@
 package com.cdr.gen;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.apache.kafka.clients.producer.Producer;
 import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.cdr.gen.util.Configuration;
 import com.cdr.gen.util.IOUtils;
 import com.cdr.gen.util.JavaUtils;
+import com.cdr.gen.util.KafkaProducerExample;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 
@@ -47,7 +48,7 @@ public final class CDRGen {
 
         configStr = Files.toString(new File(file), Charset.defaultCharset());
       }
-      
+
       Gson gson = new Gson();
       config = gson.fromJson(configStr, Configuration.class);
 
@@ -64,40 +65,37 @@ public final class CDRGen {
     DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
     DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
-    try {
-      FileWriter fw = new FileWriter(outputFile);
-      String newLine = System.getProperty("line.separator");
-
-      for (Person p : customers) {
-        for (Call c : p.getCalls()) {
-          fw.append(
-              c.getId()
-                  + ","
-                  + p.getPhoneNumber()
-                  + ","
-                  + c.getLine()
-                  + ","
-                  + c.getDestPhoneNumber()
-                  + ","
-                  + c.getTime().getStart().toString(dateFormatter)
-                  + ","
-                  + c.getTime().getEnd().toString(dateFormatter)
-                  + ","
-                  + c.getTime().getStart().toString(timeFormatter)
-                  + ","
-                  + c.getTime().getEnd().toString(timeFormatter)
-                  + ","
-                  + c.getType()
-                  + ","
-                  + c.getCost()
-                  + newLine);
-        }
+    Producer<String, String> producer = KafkaProducerExample.createProducer();
+    for (Person p : customers) {
+      for (Call c : p.getCalls()) {
+        KafkaProducerExample.sendMessage(
+            producer,
+            new StringBuilder()
+                .append(c.getId())
+                .append(",")
+                .append(p.getPhoneNumber())
+                .append(",")
+                .append(c.getLine())
+                .append(",")
+                .append(c.getDestPhoneNumber())
+                .append(",")
+                .append(c.getTime().getStart().toString(dateFormatter))
+                .append(",")
+                .append(c.getTime().getEnd().toString(dateFormatter))
+                .append(",")
+                .append(c.getTime().getStart().toString(timeFormatter))
+                .append(",")
+                .append(c.getTime().getEnd().toString(timeFormatter))
+                .append(",")
+                .append(c.getType())
+                .append(",")
+                .append(c.getCost())
+                .toString());
       }
-
-      fw.close();
-    } catch (IOException ex) {
-      LOG.error("Error while writing the output file.", ex);
     }
+
+    producer.flush();
+    producer.close();
   }
 
   public static void main(String[] args) {
