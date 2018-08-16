@@ -16,7 +16,7 @@ public class KafkaProducerExample {
 
   private static final Logger log = LoggerFactory.getLogger(KafkaProducerExample.class);
 
-  private static final String BOOTSTRAP_SERVERS = "kafka-boker-1:9092,kafka-boker-2:9092,kafka-boker-3:9092";
+  private static final String BOOTSTRAP_SERVERS = "kafka-broker-1:9092,kafka-broker-2:9092,kafka-broker-3:9092";
   private static final String TOPIC = "public.cdr";
 
   public static Producer<String, String> createProducer() {
