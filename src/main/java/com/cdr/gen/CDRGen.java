@@ -61,7 +61,7 @@ public final class CDRGen {
     return config;
   }
 
-  public void saveToFile(String outputFile, List<Person> customers) {
+  public void saveToFile(List<Person> customers) {
     DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
     DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss");
 
@@ -99,23 +99,15 @@ public final class CDRGen {
   }
 
   public static void main(String[] args) {
-    if (args.length == 0) {
-      String exec =
-          new java.io.File(
-                  CDRGen.class.getProtectionDomain().getCodeSource().getLocation().getPath())
-              .getName();
-      System.out.println("Usage: java -jar " + exec + " <output_file> [<config_file>]");
-      System.exit(1);
-    }
 
-    String configFile = (args.length > 1) ? args[1] : DEFAULT_CONFIG_FILE;
+    String configFile = DEFAULT_CONFIG_FILE;
     CDRGen generator = new CDRGen(configFile);
 
     Population population = new Population(generator.getConfig());
     population.create();
 
     List<Person> customers = population.getPopulation();
-    generator.saveToFile(args[0], customers);
+    generator.saveToFile(customers);
     LOG.info("Done.");
   }
 }
