@@ -1,10 +1,11 @@
 package com.cdr.gen;
 
-import com.cdr.gen.util.RandomGaussian;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.cdr.gen.util.RandomGaussian;
 
 /**
  * Generates a set of phone numbers for which a person can call.

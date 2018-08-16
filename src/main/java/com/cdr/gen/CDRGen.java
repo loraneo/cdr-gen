@@ -1,8 +1,5 @@
 package com.cdr.gen;
 
-import com.cdr.gen.util.IOUtils;
-import com.cdr.gen.util.JavaUtils;
-import com.google.common.io.Files;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,12 +7,17 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.cdr.gen.util.IOUtils;
+import com.cdr.gen.util.JavaUtils;
+import com.google.common.io.Files;
 
 /**
  * This class only loads the configuration file and handles the saving of the population

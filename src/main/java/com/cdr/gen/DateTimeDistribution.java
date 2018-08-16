@@ -1,8 +1,5 @@
 package com.cdr.gen;
 
-import com.cdr.gen.util.RandomGaussian;
-import com.cdr.gen.util.IOUtils;
-import com.cdr.gen.util.JavaUtils;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -23,6 +21,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvListReader;
 import org.supercsv.prefs.CsvPreference;
+
+import com.cdr.gen.util.IOUtils;
+import com.cdr.gen.util.JavaUtils;
+import com.cdr.gen.util.RandomGaussian;
 
 /**
  * Handles the probabilities of a call happening in a given day, the duration of

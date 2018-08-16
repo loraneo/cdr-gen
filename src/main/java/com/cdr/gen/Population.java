@@ -1,16 +1,18 @@
 package com.cdr.gen;
 
-import com.cdr.gen.util.RandomUtil;
-import com.cdr.gen.util.RandomGaussian;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
+
+import com.cdr.gen.util.RandomGaussian;
+import com.cdr.gen.util.RandomUtil;
 
 /**
  * This class creates the defined number of customers and a set of calls following

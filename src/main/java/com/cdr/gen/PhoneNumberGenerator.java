@@ -1,8 +1,5 @@
 package com.cdr.gen;
 
-import com.cdr.gen.util.IOUtils;
-import com.cdr.gen.util.JavaUtils;
-import com.cdr.gen.util.RandomUtil;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,11 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+
 import org.apache.log4j.Logger;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.ICsvListReader;
 import org.supercsv.prefs.CsvPreference;
+
+import com.cdr.gen.util.IOUtils;
+import com.cdr.gen.util.JavaUtils;
+import com.cdr.gen.util.RandomUtil;
 
 /**
  * Generates phone numbers and codes.
@@ -71,13 +72,10 @@ public class PhoneNumberGenerator {
      * @return The random phone number
      */
     public static String getRandomNumber(int numDigits) {
-        Random rnd = new Random(System.currentTimeMillis());
-        
         String number = "";
         for (int i=0; i<numDigits; i++) {
             number += RandomUtil.randInt(0, 9);
-        }
-        
+        }        
         return number;
     }
     
