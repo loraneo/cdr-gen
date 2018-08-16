@@ -34,7 +34,7 @@ public class Call implements Serializable {
   }
 
   public Interval getTime() {
-    return this.time;
+    return time;
   }
 
   public double getCost() {
