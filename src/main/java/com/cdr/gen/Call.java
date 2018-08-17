@@ -2,8 +2,6 @@ package com.cdr.gen;
 
 import java.io.Serializable;
 
-import org.joda.time.Interval;
-
 /**
  * Holds information about a call.
  *
@@ -14,40 +12,40 @@ public class Call implements Serializable {
   /** */
   private static final long serialVersionUID = 1L;
 
-  private long id;
-  private int line;
-  private String type;
-  private Interval time;
+  private String time;
+  private String callerId;
+  private String from;
+  private String to;
+  private String disposition;
+  private long minutes;
   private double cost;
-  private String sourcePhoneNumber;
-  private String destPhoneNumber;
 
-  public long getId() {
-    return this.id;
+  public String getTime() {
+    return this.time;
   }
 
-  public int getLine() {
-    return this.line;
+  public String getCallerId() {
+    return this.callerId;
   }
 
-  public String getType() {
-    return this.type;
+  public String getFrom() {
+    return this.from;
   }
 
-  public Interval getTime() {
-    return time;
+  public String getTo() {
+    return this.to;
+  }
+
+  public String getDisposition() {
+    return this.disposition;
+  }
+
+  public long getMinutes() {
+    return this.minutes;
   }
 
   public double getCost() {
     return this.cost;
-  }
-
-  public String getSourcePhoneNumber() {
-    return sourcePhoneNumber;
-  }
-
-  public String getDestPhoneNumber() {
-    return this.destPhoneNumber;
   }
 
   public static Builder builder() {
@@ -55,38 +53,38 @@ public class Call implements Serializable {
   }
 
   public class Builder {
-    public Builder id(long id) {
-      Call.this.id = id;
-      return this;
-    }
-
-    public Builder line(int line) {
-      Call.this.line = line;
-      return this;
-    }
-
-    public Builder type(String type) {
-      Call.this.type = type;
-      return this;
-    }
-
-    public Builder time(Interval time) {
+    public Builder time(String time) {
       Call.this.time = time;
+      return this;
+    }
+
+    public Builder callerId(String callerId) {
+      Call.this.callerId = callerId;
+      return this;
+    }
+
+    public Builder from(String from) {
+      Call.this.from = from;
+      return this;
+    }
+
+    public Builder to(String to) {
+      Call.this.to = to;
+      return this;
+    }
+
+    public Builder disposition(String disposition) {
+      Call.this.disposition = disposition;
+      return this;
+    }
+
+    public Builder minutes(long minutes) {
+      Call.this.minutes = minutes;
       return this;
     }
 
     public Builder cost(double cost) {
       Call.this.cost = cost;
-      return this;
-    }
-
-    public Builder sourcePhoneNumber(String sourcePhoneNumber) {
-      Call.this.sourcePhoneNumber = sourcePhoneNumber;
-      return this;
-    }
-
-    public Builder destPhoneNumber(String destPhoneNumber) {
-      Call.this.destPhoneNumber = destPhoneNumber;
       return this;
     }
 
