@@ -52,8 +52,17 @@ public final class CDRGen {
 
     List<Call> clls = new ArrayList<>();
     for (int i = 0; i < num; i++) {
-      String fromRegion = regions[new Random().nextInt(regions.length)];
-      String toRegion = regions[new Random().nextInt(regions.length)];
+      String code = "NG";
+      String fromRegion = "";
+      String toRegion = "";
+      if (i % 2 == 0) {
+        fromRegion = code;
+        toRegion = regions[new Random().nextInt(regions.length)];
+      } else {
+        fromRegion = regions[new Random().nextInt(regions.length)];
+        toRegion = code;
+      }
+
       PhoneNumber sourceNumber = PhoneNumberUtil.getInstance().getExampleNumber(fromRegion);
       PhoneNumber targetNumber = PhoneNumberUtil.getInstance().getExampleNumber(toRegion);
       clls.add(
