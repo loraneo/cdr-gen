@@ -77,6 +77,8 @@ public final class CDRGen {
                 .append(",")
                 .append(c.getLine())
                 .append(",")
+                .append(c.getSourcePhoneNumber())
+                .append(",")
                 .append(c.getDestPhoneNumber())
                 .append(",")
                 .append(c.getTime().getStart().toString(dateFormatter))

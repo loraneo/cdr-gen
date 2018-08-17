@@ -19,6 +19,7 @@ public class Call implements Serializable {
   private String type;
   private Interval time;
   private double cost;
+  private String sourcePhoneNumber;
   private String destPhoneNumber;
 
   public long getId() {
@@ -39,6 +40,10 @@ public class Call implements Serializable {
 
   public double getCost() {
     return this.cost;
+  }
+
+  public String getSourcePhoneNumber() {
+    return sourcePhoneNumber;
   }
 
   public String getDestPhoneNumber() {
@@ -72,6 +77,11 @@ public class Call implements Serializable {
 
     public Builder cost(double cost) {
       Call.this.cost = cost;
+      return this;
+    }
+
+    public Builder sourcePhoneNumber(String sourcePhoneNumber) {
+      Call.this.sourcePhoneNumber = sourcePhoneNumber;
       return this;
     }
 

@@ -199,6 +199,7 @@ public class Population {
               .id(i)
               .type(type)
               .line((int) (random.nextDouble() * p.getPhoneLines() + 0.5))
+              .sourcePhoneNumber(p.getPhoneNumber())
               .destPhoneNumber(
                   phoneBucket
                       .get(getType(listOfCallTypes, i))
