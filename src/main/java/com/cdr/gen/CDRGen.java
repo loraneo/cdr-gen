@@ -55,12 +55,12 @@ public final class CDRGen {
       String code = "NG";
       String fromRegion = "";
       String toRegion = "";
-      if (i % 2 == 0) {
-        fromRegion = code;
-        toRegion = regions[new Random().nextInt(regions.length)];
-      } else {
+      if (i % 4 == 0) {
         fromRegion = regions[new Random().nextInt(regions.length)];
         toRegion = code;
+      } else {
+        fromRegion = code;
+        toRegion = regions[new Random().nextInt(regions.length)];
       }
 
       PhoneNumber sourceNumber = PhoneNumberUtil.getInstance().getExampleNumber(fromRegion);
