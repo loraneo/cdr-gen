@@ -20,10 +20,10 @@ import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 public final class CDRGen {
   private static final Logger LOG = Logger.getLogger(CDRGen.class);
 
-  public static void saveToFile() {
+  public static void saveToFile(List<Call> calls) {
 
     Producer<String, String> producer = KafkaProducerExample.createProducer();
-    for (Call c : generateCalls(new Random().nextInt(100))) {
+    for (Call c : calls) {
       KafkaProducerExample.sendMessage(
           producer,
           new StringBuilder()
@@ -73,7 +73,7 @@ public final class CDRGen {
 
   public static void main(String[] args) throws InterruptedException {
     while (true) {
-      saveToFile();
+      saveToFile(generateCalls(new Random().nextInt(100)));
       Thread.sleep(1000);
       LOG.info("Done.");
     }
