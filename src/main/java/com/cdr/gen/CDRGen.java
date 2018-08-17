@@ -24,8 +24,7 @@ public final class CDRGen {
 
     Producer<String, String> producer = KafkaProducerExample.createProducer();
     for (Call c : calls) {
-      KafkaProducerExample.sendMessage(
-          producer,
+      String message =
           new StringBuilder()
               .append(c.getTime())
               .append(",")
@@ -40,7 +39,8 @@ public final class CDRGen {
               .append(c.getMinutes())
               .append(",")
               .append(c.getCost())
-              .toString());
+              .toString();
+      KafkaProducerExample.sendMessage(producer, message);
     }
 
     producer.flush();
@@ -60,8 +60,8 @@ public final class CDRGen {
           Call.builder()
               .time(LocalDateTime.now().format(java.time.format.DateTimeFormatter.ISO_DATE_TIME))
               .callerId(Integer.toString(i))
-              .from(sourceNumber.toString())
-              .to(targetNumber.toString())
+              .from(sourceNumber.getCountryCode() + "" + sourceNumber.getNationalNumber())
+              .to(targetNumber.getCountryCode() + "" + targetNumber.getNationalNumber())
               .disposition("answered")
               .minutes(new Random().nextInt(120))
               .cost(0.02d)
