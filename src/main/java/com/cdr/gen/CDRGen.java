@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.math3.analysis.function.Gaussian;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.log4j.Logger;
 
@@ -47,11 +48,12 @@ public final class CDRGen {
     producer.close();
   }
 
-  private static List<Call> generateCalls(int num) {
+  private static List<Call> generateCalls(LocalDateTime now) {
     String[] regions = PhoneNumberUtil.getInstance().getSupportedRegions().toArray(new String[0]);
 
     List<Call> clls = new ArrayList<>();
-    for (int i = 0; i < num; i++) {
+    int numberOfCalls = getDistribution(now);
+    for (int i = 0; i < numberOfCalls; i++) {
       String code = "NG";
       String fromRegion = "";
       String toRegion = "";
@@ -80,10 +82,23 @@ public final class CDRGen {
     return clls;
   }
 
+  public static int getDistribution(LocalDateTime now) {
+    int time = now.getHour() * 60 + now.getMinute();
+    Gaussian distribution = new Gaussian(1d, 0.5d);
+
+    double point = time / 1440d;
+
+    int count = 700;
+    int diff = 1700;
+    int numberOfCalls = (int) (count + diff * (distribution.value(point)));
+    return numberOfCalls;
+  }
+
   public static void main(String[] args) throws InterruptedException {
     while (true) {
-      saveToFile(generateCalls(new Random().nextInt(100)));
-      Thread.sleep(1000);
+      LocalDateTime now = LocalDateTime.now();
+      saveToFile(generateCalls(now));
+      Thread.sleep(1000 * 60);
       LOG.info("Done.");
     }
   }
