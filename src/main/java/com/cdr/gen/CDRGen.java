@@ -42,9 +42,7 @@ public final class CDRGen {
               .toString();
       KafkaProducerExample.sendMessage(producer, message);
     }
-
     producer.flush();
-    producer.close();
   }
 
   private static List<Call> generateCalls(LocalDateTime now) {
@@ -109,5 +107,6 @@ public final class CDRGen {
       Thread.sleep(1000 * 60);
       LOG.info("Done.");
     }
+    
   }
 }
