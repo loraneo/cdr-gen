@@ -95,6 +95,12 @@ public final class CDRGen {
   }
 
   public static void main(String[] args) throws InterruptedException {
+
+    for (int i = 0; i <= 47520; i++) {
+      LocalDateTime now = LocalDateTime.now().minusMinutes(i);
+      saveToFile(generateCalls(now));
+    }
+
     while (true) {
       LocalDateTime now = LocalDateTime.now();
       saveToFile(generateCalls(now));
