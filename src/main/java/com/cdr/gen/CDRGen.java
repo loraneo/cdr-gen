@@ -21,9 +21,8 @@ import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 public final class CDRGen {
   private static final Logger LOG = Logger.getLogger(CDRGen.class);
 
-  public static void saveToFile(List<Call> calls) {
+  public static void saveToFile(List<Call> calls, Producer<String, String> producer) {
 
-    Producer<String, String> producer = KafkaProducerExample.createProducer();
     for (Call c : calls) {
       String message =
           new StringBuilder()
@@ -96,14 +95,17 @@ public final class CDRGen {
 
   public static void main(String[] args) throws InterruptedException {
 
+    Producer<String, String> producer = KafkaProducerExample.createProducer();
     for (int i = 0; i <= 47520; i++) {
+      System.out.println("Generating calls for minute: " + i);
       LocalDateTime now = LocalDateTime.now().minusMinutes(i);
-      saveToFile(generateCalls(now));
+      saveToFile(generateCalls(now), producer);
     }
 
     while (true) {
       LocalDateTime now = LocalDateTime.now();
-      saveToFile(generateCalls(now));
+      System.out.println("Generating calls for minute: " + now.toString());
+      saveToFile(generateCalls(now), producer);
       Thread.sleep(1000 * 60);
       LOG.info("Done.");
     }
