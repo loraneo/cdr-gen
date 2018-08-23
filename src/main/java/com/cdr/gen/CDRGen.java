@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.apache.commons.math3.analysis.function.Gaussian;
 import org.apache.kafka.clients.producer.Producer;
@@ -92,13 +93,24 @@ public final class CDRGen {
   }
 
   public static void main(String[] args) throws InterruptedException {
-
     Producer<String, String> producer = KafkaProducerExample.createProducer();
-    for (int i = 0; i <= 47520; i++) {
-      System.out.println("Generating calls for minute: " + i);
-      LocalDateTime now = LocalDateTime.now().minusMinutes(i);
-      saveToFile(generateCalls(now), producer);
-    }
+
+    new Thread(
+            new Runnable() {
+
+              @Override
+              public void run() {
+                IntStream.range(0, 47520)
+                    .parallel()
+                    .forEach(
+                        p -> {
+                          System.out.println("Generating calls for minute: " + p);
+                          LocalDateTime now = LocalDateTime.now().minusMinutes(p);
+                          saveToFile(generateCalls(now), producer);
+                        });
+              }
+            })
+        .run();
 
     while (true) {
       LocalDateTime now = LocalDateTime.now();
@@ -107,6 +119,5 @@ public final class CDRGen {
       Thread.sleep(1000 * 60);
       LOG.info("Done.");
     }
-    
   }
 }
