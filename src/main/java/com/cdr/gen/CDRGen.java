@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.analysis.function.Gaussian;
@@ -67,7 +69,7 @@ public final class CDRGen {
       PhoneNumber targetNumber = PhoneNumberUtil.getInstance().getExampleNumber(toRegion);
       clls.add(
           Call.builder()
-              .time(LocalDateTime.now().format(java.time.format.DateTimeFormatter.ISO_DATE_TIME))
+              .time(now.format(java.time.format.DateTimeFormatter.ISO_DATE_TIME))
               .callerId(Integer.toString(i))
               .from(sourceNumber.getCountryCode() + "" + sourceNumber.getNationalNumber())
               .to(targetNumber.getCountryCode() + "" + targetNumber.getNationalNumber())
@@ -93,24 +95,38 @@ public final class CDRGen {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    Producer<String, String> producer = KafkaProducerExample.createProducer();
 
     new Thread(
             new Runnable() {
 
               @Override
               public void run() {
-                IntStream.range(0, 47520)
-                    .parallel()
-                    .forEach(
-                        p -> {
-                          System.out.println("Generating calls for minute: " + p);
-                          LocalDateTime now = LocalDateTime.now().minusMinutes(p);
-                          saveToFile(generateCalls(now), producer);
-                        });
+                Producer<String, String> producer = KafkaProducerExample.createProducer();
+
+                ForkJoinPool myPool = new ForkJoinPool(16);
+                try {
+                  myPool
+                      .submit(
+                          () ->
+                              IntStream.range(0, 47520)
+                                  .parallel()
+                                  .forEach(
+                                      p -> {
+                                        System.out.println("Generating calls for minute: " + p);
+                                        LocalDateTime now = LocalDateTime.now().minusMinutes(p);
+                                        saveToFile(generateCalls(now), producer);
+                                      }))
+                      .get();
+                } catch (InterruptedException | ExecutionException e) {
+                  LOG.error(e);
+                }
+                myPool.shutdown();
+                producer.close();
               }
             })
         .run();
+
+    Producer<String, String> producer = KafkaProducerExample.createProducer();
 
     while (true) {
       LocalDateTime now = LocalDateTime.now();
