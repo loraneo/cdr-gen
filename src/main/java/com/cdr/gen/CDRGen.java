@@ -103,24 +103,14 @@ public final class CDRGen {
               public void run() {
                 Producer<String, String> producer = KafkaProducerExample.createProducer();
 
-                ForkJoinPool myPool = new ForkJoinPool(16);
-                try {
-                  myPool
-                      .submit(
-                          () ->
-                              IntStream.range(0, 47520)
-                                  .parallel()
-                                  .forEach(
-                                      p -> {
-                                        System.out.println("Generating calls for minute: " + p);
-                                        LocalDateTime now = LocalDateTime.now().minusMinutes(p);
-                                        saveToFile(generateCalls(now), producer);
-                                      }))
-                      .get();
-                } catch (InterruptedException | ExecutionException e) {
-                  LOG.error(e);
-                }
-                myPool.shutdown();
+                IntStream.range(0, 47520)
+                    .parallel()
+                    .forEach(
+                        p -> {
+                          System.out.println("Generating calls for minute: " + p);
+                          LocalDateTime now = LocalDateTime.now().minusMinutes(p);
+                          saveToFile(generateCalls(now), producer);
+                        });
                 producer.close();
               }
             })
