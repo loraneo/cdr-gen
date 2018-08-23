@@ -17,7 +17,7 @@ public class Call implements Serializable {
   private String from;
   private String to;
   private String disposition;
-  private long minutes;
+  private long seconds;
   private double cost;
 
   public String getTime() {
@@ -40,8 +40,8 @@ public class Call implements Serializable {
     return this.disposition;
   }
 
-  public long getMinutes() {
-    return this.minutes;
+  public long getSeconds() {
+    return this.seconds;
   }
 
   public double getCost() {
@@ -78,8 +78,8 @@ public class Call implements Serializable {
       return this;
     }
 
-    public Builder minutes(long minutes) {
-      Call.this.minutes = minutes;
+    public Builder seconds(long seconds) {
+      Call.this.seconds = seconds;
       return this;
     }
 

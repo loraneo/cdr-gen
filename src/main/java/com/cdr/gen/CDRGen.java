@@ -39,7 +39,7 @@ public final class CDRGen {
               .append(",")
               .append(c.getDisposition())
               .append(",")
-              .append(c.getMinutes())
+              .append(c.getSeconds())
               .append(",")
               .append(c.getCost())
               .toString();
@@ -74,7 +74,7 @@ public final class CDRGen {
               .from(sourceNumber.getCountryCode() + "" + sourceNumber.getNationalNumber())
               .to(targetNumber.getCountryCode() + "" + targetNumber.getNationalNumber())
               .disposition("answered")
-              .minutes(new Random().nextInt(120))
+              .seconds(new Random().nextInt(120))
               .cost(0.02d)
               .build());
     }
